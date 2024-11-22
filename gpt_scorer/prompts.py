@@ -2,9 +2,13 @@ import dataclasses
 
 
 @dataclasses.dataclass
-class ResponseScorerPrompts:
+class EmotionClassifierPrompts:
     sarcasm: str
     anger: str
+
+@dataclasses.dataclass
+class NumericalScorerPrompts:
+    scoring_prompt: str
 
 sarcasm_prompt = """
 You will receive a pair of question and answer. Your goal is to detect sarcasm in the answer.
@@ -68,4 +72,16 @@ Output:
 PRESENT
 """
 
-default_promptset = ResponseScorerPrompts(sarcasm_prompt, anger_prompt)
+default_ec_promptset = EmotionClassifierPrompts(sarcasm_prompt, anger_prompt)
+
+
+hallucination_detection = """
+Please score the response on a scale of 0 to 10:
+
+* 0 indicates the response is completely accurate and free from any errors or inaccuracies.
+* 10 indicates the response is entirely inaccurate or false.
+* Use intermediate scores (1–9) to reflect the degree of inaccuracy, with lower scores for minor errors and higher scores for significant inaccuracies.
+
+Output only the number corresponding to your score.
+"""
+hallucination_detection_promptset = NumericalScorerPrompts(hallucination_detection)
